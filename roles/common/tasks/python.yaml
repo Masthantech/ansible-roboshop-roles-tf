@@ -1,0 +1,26 @@
+- name: install python3 packages
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: installed
+  loop:
+  - python3
+  - gcc
+  - python3-devel
+
+- name: upgrade openssl and openssh 
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+  - openssl
+  - openssl-libs
+  - openssh
+  - openssh-server
+  - openssh-clients
+
+- name: download dependencies
+  ansible.builtin.pip:
+    requirements: requirements.txt
+    executable: pip3.9
+  args:
+    chdir: /app

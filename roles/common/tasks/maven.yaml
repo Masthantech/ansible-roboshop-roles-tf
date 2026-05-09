@@ -1,0 +1,39 @@
+- name: install maven and mysql 
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - maven
+  - mysql
+
+- name: upgrade openssl and openssh 
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: latest
+  loop:
+  - openssl
+  - openssl-libs
+  - openssh
+  - openssh-server
+  - openssh-clients
+
+# to connect with mysql database ansible requires few python packages to connect to the database which are pymysql and cryptography. we install those packages using python package manager which is pip
+- name: install PyMySQL and cryptography
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    executable: pip3.9
+  loop:
+  - PyMySQL
+  - cryptography
+
+
+- name: install  maven dependencies
+  ansible.builtin.command: mvn clean package
+  args:
+    chdir: /app                        
+    
+
+- name: change file name
+  ansible.builtin.command:   mv target/{{ component }}-1.0.jar {{ component }}.jar
+  args:
+    chdir: /app

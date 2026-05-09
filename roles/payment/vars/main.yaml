@@ -1,0 +1,5 @@
+CART_HOST: cart.shaik.fun
+USER_HOST: user.shaik.fun
+RABBITMQ_HOST: rabbitmq.shaik.fun
+RABBITMQ_USER: roboshop
+RABBITMQ_PASSWORD: roboshop123

@@ -1,0 +1,59 @@
+- name: disable nginx default module
+  ansible.builtin.command: dnf module disable nginx -y
+
+- name: enable nginx:1.24 module
+  ansible.builtin.command: dnf module enable nginx:1.24 -y
+
+- name: install nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: present
+
+- name: start and enable nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: remote the default html content
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: absent
+
+- name: create new html directory in same path
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: directory
+
+- name: download the frontend code
+  ansible.builtin.get_url:
+    url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+    dest: /tmp/frontend.zip
+
+- name: unzip the frontend code into html directory
+  ansible.builtin.unarchive:
+    src: /tmp/frontend.zip
+    dest: /usr/share/nginx/html  
+    remote_src: yes
+
+# we have our custom nginx configuration. So we need to remove the old config and replace it with our custom config.
+# we remove the current config file and copy new config in same path
+
+- name: remove the default nginx conf
+  ansible.builtin.file:
+    path: /etc/nginx/nginx.conf     
+    state: absent
+
+- name: copy new conf file
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - Restart nginx  
+
+
+
+
+    
+   
+
