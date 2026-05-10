@@ -38,11 +38,11 @@
 # below commoon script is steps to follow when new app version comes out, to run only this deployment script we need to use tags concept here. but with "include_role" the conditions and tags only works on include_role not on the tasks inside it. "Import_role" is woks with tags and conditions it applies the tags to tasks inside it.
 
 # Import_role checks the script for errors before execuiting the script. while include_role do this dynamically.
-- name: deployment
-  tags:
-  - deployment
-  import_role:
-    name: common
-    tasks_from: deployment
+# - name: deployment
+#   tags:
+#   - deployment
+#   import_role:
+#     name: common
+#     tasks_from: deployment
 
 
