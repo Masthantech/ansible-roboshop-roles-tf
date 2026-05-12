@@ -1,2 +1,2 @@
-MONGODB_HOST: mongodb.shaik.fun
+MONGODB_HOST: "mongodb-{{ env }}.shaik.fun"
 

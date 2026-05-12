@@ -19,7 +19,7 @@
     state: present
 
 - name: connect to mongodb server to check data is loaded or not
-  ansible.builtin.command: mongosh --host mongodb.shaik.fun --eval 'db.getMongo().getDBNames().indexOf("catalogue")'   
+  ansible.builtin.command: mongosh --host {{ MONGODB_HOST }} --eval 'db.getMongo().getDBNames().indexOf("catalogue")'   
   register: catalogue_output
 
 - name: print he catalogue output
@@ -27,7 +27,7 @@
     msg: "{{ catalogue_output }}"  
 
 - name: load the products data into database     
-  ansible.builtin.command: mongosh --host mongodb.shaik.fun < /app/db/master-data.js
+  ansible.builtin.command: mongosh --host {{ MONGODB_HOST }} < /app/db/master-data.js
   when: catalogue_output.stdout | int < 0
 
 - name: systemd setup
